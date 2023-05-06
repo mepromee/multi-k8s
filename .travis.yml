@@ -3,8 +3,8 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - docker build -t mepromee/react-test -f ./client/Dockerfile.dev ./client    # the last .client refers to look into the client directory for build context.
+before_install:  # the last .client refers to look into the client directory for build context.
+  - docker build -t mepromee/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true mepromee/react-test npm test
