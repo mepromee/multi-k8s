@@ -1,0 +1,16 @@
+language: generic # this is to avoid the build failed error: rakefile not found
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker bulid -t mepromee/react-test -f ./client/Dockerfile.dev ./client    # the last .client refers to look into the client directory for build context.
+
+script:
+  - docker run -e CI=true mepromee/react-test npm test
+
+after_success: # each of the following lines mean that it should go to the given context folder and find the Dockerfile and use it to build image
+  - docker build -t mepromee/multi-client ./client
+  - docker build -t mepromee/multi-nginx ./nginx
+  - docker build -t mepromee/multi-server ./server
+  - docker built -t mepromee/multi-worker ./worker
