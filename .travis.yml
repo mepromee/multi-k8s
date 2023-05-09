@@ -15,9 +15,22 @@ after_success: # each of the following lines mean that it should go to the given
   - docker build -t mepromee/multi-server ./server
   - docker build -t mepromee/multi-worker ./worker
   # log in to the docker CLI
+  # added the docker id and password in travis repo settings as environment variable
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # take those images and push them to docker hub
   - docker push mepromee/multi-client
   - docker push mepromee/multi-nginx
   - docker push mepromee/multi-server
   - docker push mepromee/multi-worker
+
+  deploy:
+    provider: elasticbeanstalk
+    region: us-east-1
+    app: multi-docker
+    env: Multi-docker-env
+    bucket_name: elasticbeanstalk-us-east-1-661083637753
+    bucket_path: docker_multi
+    on:
+      branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
