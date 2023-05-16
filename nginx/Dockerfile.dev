@@ -1,3 +1,0 @@
-FROM nginx
-# we have to copy in this way as it is documented in nginx docker hub. this will replace default conf with this conf.
-COPY ./default.conf /etc/nginx/conf.d/default.conf 
